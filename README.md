@@ -79,32 +79,32 @@ The [`llms.txt` standard](./docs/llms-txt-contract.md) is the seam between **Doc
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │ SOURCE REGISTRATION                                             │
-│ POST /sources → registry → background indexing job             │
+│ POST /sources → registry → background indexing job              │
 │              → per-source Qdrant collection created             │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
 │ INGESTION PIPELINE (async, per-source)                          │
-│ llms.txt → fetch links → download .md → chunk → embed → index  │
+│ llms.txt → fetch links → download .md → chunk → embed → index   │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
 │ QUERY PIPELINE (runtime)                                        │
 │ question → cache lookup → embed → hybrid retrieve → rerank      │
-│         → prompt assemble → LLM (Pydantic-validated)           │
+│         → prompt assemble → LLM (Pydantic-validated)            │
 │         → citation validate → trace + cache + respond           │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
 │ OBSERVABILITY                                                   │
-│ OTel SDK → Jaeger (traces) → Loki (logs) → Prometheus (metrics)│
-│                           ↓                                      │
-│                        Grafana (dashboards)                      │
+│ OTel SDK → Jaeger (traces) → Loki (logs) → Prometheus (metrics) │
+│                           ↓                                     │
+│                        Grafana (dashboards)                     │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
 │ EVALUATION (CI-gated per PR, per source)                        │
-│ golden set → RAGAS scoring → GitHub Actions gate               │
+│ golden set → RAGAS scoring → GitHub Actions gate                │
 │ (3% drift → fail)                                               │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -164,23 +164,23 @@ Create a `.env` file (gitignored) with your secrets. See `.env.example` for plac
 
 ## Documentation
 
-| Document | Purpose |
-|----------|---------|
-| [**docs/PRD-DocSense.md**](./docs/PRD-DocSense.md) | Full product requirements: design, algorithms, acceptance criteria, cost model. **Read this for design decisions.** |
-| [**docs/llms-txt-contract.md**](./docs/llms-txt-contract.md) | The `llms.txt` format specification. **Read this before onboarding a new source.** |
-| [**docs/PRD-DocSense-Crawler.md**](./docs/PRD-DocSense-Crawler.md) | Companion product (deferred to v2). Context only; not needed for v1. |
-| [**CLAUDE.md**](./CLAUDE.md) | Project memory: current status, known issues, decisions, architecture notes, file inventory. **Read this at the start of each session.** |
+| Document                                                           | Purpose                                                                                                                                  |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| [**docs/PRD-DocSense.md**](./docs/PRD-DocSense.md)                 | Full product requirements: design, algorithms, acceptance criteria, cost model. **Read this for design decisions.**                      |
+| [**docs/llms-txt-contract.md**](./docs/llms-txt-contract.md)       | The `llms.txt` format specification. **Read this before onboarding a new source.**                                                       |
+| [**docs/PRD-DocSense-Crawler.md**](./docs/PRD-DocSense-Crawler.md) | Companion product (deferred to v2). Context only; not needed for v1.                                                                     |
+| [**CLAUDE.md**](./CLAUDE.md)                                       | Project memory: current status, known issues, decisions, architecture notes, file inventory. **Read this at the start of each session.** |
 
 ---
 
 ## Project Status
 
-| Phase | Scope | Status |
-|-------|-------|--------|
+| Phase   | Scope                                                   | Status         |
+| ------- | ------------------------------------------------------- | -------------- |
 | Phase 1 | Ingestion + hybrid retrieval (3 chunkers, multi-tenant) | ⬜ Not started |
-| Phase 2 | Cross-encoder reranking with skip-on-confidence | ⬜ Not started |
-| Phase 3 | Citation-enforced generation + `?explain=true` mode | ⬜ Not started |
-| Phase 4 | Observability + CI-gated RAGAS evaluation | ⬜ Not started |
+| Phase 2 | Cross-encoder reranking with skip-on-confidence         | ⬜ Not started |
+| Phase 3 | Citation-enforced generation + `?explain=true` mode     | ⬜ Not started |
+| Phase 4 | Observability + CI-gated RAGAS evaluation               | ⬜ Not started |
 
 See [CLAUDE.md § Progress Log](./CLAUDE.md#13-progress-log) for detailed session history.
 
@@ -210,9 +210,9 @@ See [CLAUDE.md § Progress Log](./CLAUDE.md#13-progress-log) for detailed sessio
 
 On first execution, these models auto-download from Hugging Face (large, one-time):
 
-| Model | Size | Triggered by |
-|-------|------|--------------|
-| `BAAI/bge-m3` | ~2.3 GB | First embedding call |
+| Model                     | Size    | Triggered by         |
+| ------------------------- | ------- | -------------------- |
+| `BAAI/bge-m3`             | ~2.3 GB | First embedding call |
 | `BAAI/bge-reranker-v2-m3` | ~1.1 GB | First reranking call |
 
 Models live in `~/.cache/huggingface/` by default. Subsequent runs are offline.
@@ -245,13 +245,13 @@ pytest --cov=src tests/
 
 After `make setup`, access these UIs:
 
-| Service | URL | Default Credentials |
-|---------|-----|-------------------|
-| **Qdrant** | http://localhost:6333/dashboard | — |
-| **Jaeger** (traces) | http://localhost:16686 | — |
-| **Prometheus** (metrics) | http://localhost:9090 | — |
-| **Grafana** (dashboards) | http://localhost:3000 | admin / admin |
-| **Loki** (logs) | http://localhost:3100 | — (not yet working in v1) |
+| Service                  | URL                             | Default Credentials       |
+| ------------------------ | ------------------------------- | ------------------------- |
+| **Qdrant**               | http://localhost:6333/dashboard | —                         |
+| **Jaeger** (traces)      | http://localhost:16686          | —                         |
+| **Prometheus** (metrics) | http://localhost:9090           | —                         |
+| **Grafana** (dashboards) | http://localhost:3000           | admin / admin             |
+| **Loki** (logs)          | http://localhost:3100           | — (not yet working in v1) |
 
 ---
 
