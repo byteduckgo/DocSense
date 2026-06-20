@@ -1,3 +1,19 @@
+# Python
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+dist/
+build/
+.eggs/
+*.egg
+CLAUDE.md
+# Testing
+.pytest_cache
+.mypy_cache
+.ruff_cache
+
 # Logs
 logs
 *.log
@@ -5,10 +21,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
 # Runtime data
 pids
 *.pid
@@ -69,6 +83,22 @@ web_modules/
 .env
 .env.*
 !.env.example
+
+# Infrastructure
+qdrant_storage/
+redis_data/
+grafana_data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
